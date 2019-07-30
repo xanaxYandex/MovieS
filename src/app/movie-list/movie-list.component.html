@@ -1,0 +1,33 @@
+<div class="movie-list" *ngIf="!isSelectedMovie">
+    <div class="movie-elements">
+        <div class="movie-item" *ngFor="let item of movieList" (click)="goToModal(item)">
+            <img [src]="'http://image.tmdb.org/t/p/w500' + item.poster_path" [alt]="item.id">
+        </div>
+    </div>
+
+    <div class="movie-pages">
+        <div *ngIf="pager.pages && pager.pages.length" class="pagination">
+            <div [ngClass]="{disabled:pager.currentPage === 1}">
+                <span (click)="setPage(1)">First</span>
+            </div>
+            <div [ngClass]="{disabled:pager.currentPage === 1}">
+                <span (click)="setPage(pager.currentPage - 1)">Previous</span>
+            </div>
+            <div *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}">
+                <span (click)="setPage(page)">{{page}}</span>
+            </div>
+            <div [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+                <span (click)="setPage(pager.currentPage + 1)">Next</span>
+            </div>
+            <div [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+                <span (click)="setPage(pager.totalPages)">Last</span>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+<app-movie-modal *ngIf="isSelectedMovie" [movieInfo]="selectedMovie" (backToMovie)="backToMovieList()"
+    (nextMovie)="toNextMovie($event)">
+</app-movie-modal>

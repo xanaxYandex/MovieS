@@ -1,0 +1,60 @@
+.movie-list {
+    font-family: 'Montserrat', sans-serif;
+    background: rgba($color: #dbdbdb, $alpha: 1.0);
+    padding: 80px 30px 30px 30px;
+
+    .movie-elements {
+        margin-left: 70px;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        flex-wrap: wrap;
+
+        .movie-item {
+            margin-bottom: 20px;
+            margin-right: 50px;
+            width: 300px;
+
+            img {
+                transition: 0.3s;
+                width: 100%;
+                height: 100%;
+                border-radius: 10px;
+                
+                &:hover {
+                    transition: 0.3s;
+                    box-shadow: 0 0 25px rgba($color: #000000, $alpha: 1.0);
+                }
+            } 
+        }
+    }
+    .movie-pages {
+        margin-top: 40px;
+        text-align: center;
+
+        span {
+            cursor: pointer;
+            transition: 0.3s;
+            font-weight: 500;
+            color: rgb(121, 121, 121);
+            padding: 10px 15px 10px 15px;
+            font-size: 19px;
+            border: 3px solid rgb(165, 165, 165);
+
+            &:hover {
+                transition: 0.3s;
+                color: rgb(0, 0, 0);
+                border: 3px solid rgb(0, 0, 0);
+                box-shadow: 0 0 10px rgb(0, 0, 0);
+            }
+        }
+    }
+
+    .pagination {
+        display: flex;
+        justify-content: center;
+        li {
+            margin: 15px;
+        }
+    }
+}

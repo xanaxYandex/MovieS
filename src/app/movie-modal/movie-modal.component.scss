@@ -1,0 +1,86 @@
+.modal-movie {
+    height: 100%;
+    font-family: 'Montserrat', sans-serif;
+    background: rgba($color: #474141, $alpha: 1.0);
+    background-size: contain;
+    padding: 30px;
+    .nav {
+        font-size: 20px;
+        font-weight: 400;
+        color: rgba(160, 160, 160, 0.822);
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        margin-bottom: 120px;
+        margin-top: 40px;
+
+        .back-btn {
+            display: flex; 
+            img {
+                width: 25px;
+                margin-right: 15px;
+            }
+        }
+
+        .next-btn {
+            display: flex; 
+            img {
+                width: 25px;
+                margin-left: 15px;
+            }
+        }
+    }
+
+    .movie-post {
+        display: flex;
+        color: rgb(241, 241, 241);
+        margin: 0px 200px 30px 200px;
+
+        .movie-img {
+            img {
+                width: 300px;
+                height: auto;
+                border-radius: 10px;  
+            }
+        }
+
+        .favourite-btn {
+            display: flex;
+            justify-content: flex-end;
+
+            span {
+                border: 1px solid rgba(160, 160, 160, 0.822);
+                border-radius: 5px;
+                padding: 10px 10px 10px 10px;
+                font-weight: 400;
+                color: rgb(175, 175, 175);
+            }
+        }
+
+        .movie-info {
+            width: 100%;
+            margin-left: 40px;
+            font-weight: 400;
+            
+            p {
+                font-size: 19px;
+            }
+
+            div {
+                p {
+                    margin-right: 30px;
+                }
+            }
+
+            hr {
+                border-color: rgba(160, 160, 160, 0.822);
+            }
+
+            
+            .movie-score {
+                display: flex;
+            }
+
+        }
+    }
+}

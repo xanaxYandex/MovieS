@@ -1,0 +1,37 @@
+<div class="modal-movie" [style.background]="posterUrl">
+    <div class="nav">
+        <div class="back-btn" (click)="backToMovieList()">
+            <img src="../../assets/arrow_back_white_192x192.png" alt="">
+            <span>Back to list</span>
+        </div>
+        <div class="next-btn" (click)="toNextMovie()">
+            <span>Next Movie</span>
+            <img src="../../assets/arrow_next_white_192x192 (копия).png" alt="">
+        </div>
+    </div>
+    <div class="movie-post">
+        <div class="movie-img">
+            <img [src]="'http://image.tmdb.org/t/p/w500' + movieInfo.poster_path" [alt]="movieInfo.id">
+        </div>
+
+        <div class="movie-info">
+            <div class="favourite-btn">
+                <span (click)="toFavourite()">{{isFavourite ?  'Remove from favourite' : 'Add to favourite'}}</span>
+            </div>
+            <h1>{{movieInfo.original_title}}</h1>
+            <div class="movie-score">
+                <p>ID: {{movieInfo.id}}</p>
+                <p>Score: {{movieInfo.vote_average}}</p>
+                <p>Rating: {{movieRating}}</p>
+                <p>Release date: {{movieInfo.release_date}}</p>
+            </div>
+
+            <hr>
+
+            <p>{{movieInfo.overview}}</p>
+
+            <hr>
+
+        </div>
+    </div>
+</div>

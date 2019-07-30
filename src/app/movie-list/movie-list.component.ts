@@ -45,19 +45,15 @@ export class MovieListComponent implements OnInit {
     }
 
     toNextMovie(movieId: number) {
-        let flag = false;
-
         for (const key in this.movieList) {
             if (this.movieList.hasOwnProperty(key)) {
-                const element = this.movieList[key];
-
-                if (flag) {
-                    this.selectedMovie = this.movieList.filter(movie => movie.id === element.id)[0];
-                    break;
-                }
+                const element = this.movieList[+key];
 
                 if (element.id === movieId) {
-                    flag = true;
+                    this.selectedMovie = this.movieList.filter(movie => {
+                        return movie.id === this.movieList[+key + 1].id;
+                    })[0];
+                    break;
                 }
             }
         }

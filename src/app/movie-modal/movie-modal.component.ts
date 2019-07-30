@@ -25,6 +25,7 @@ export class MovieModalComponent implements OnInit {
 
     ngOnInit() {
         this.checkFavourite();
+
         this.posterUrl = `http://image.tmdb.org/t/p/w500${this.movieInfo.poster_path}`;
 
         if (this.movieInfo.adult) {
@@ -52,7 +53,6 @@ export class MovieModalComponent implements OnInit {
             this.mainService.RemoveFromFavourite(this.movieInfo.id);
             this.isFavourite = !this.isFavourite;
         }
-
     }
 
     checkFavourite() {

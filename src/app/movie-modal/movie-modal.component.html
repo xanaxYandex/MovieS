@@ -1,30 +1,33 @@
-<div class="modal-movie" [style.background]="posterUrl">
+<div class="modal-movie" [style.background-image]="getBackground()">
     <div class="nav">
         <div class="back-btn" (click)="backToMovieList()">
             <img src="../../assets/arrow_back_white_192x192.png" alt="">
-            <span>Back to list</span>
+            <span></span>
         </div>
         <div class="next-btn" (click)="toNextMovie()">
-            <span>Next Movie</span>
+            <span></span>
             <img src="../../assets/arrow_next_white_192x192 (копия).png" alt="">
         </div>
     </div>
     <div class="movie-post">
-        <div class="movie-img">
-            <img [src]="'http://image.tmdb.org/t/p/w500' + movieInfo.poster_path" [alt]="movieInfo.id">
-        </div>
-
         <div class="movie-info">
+            <div class="movie-img">
+                <img [src]="'http://image.tmdb.org/t/p/w500' + movieInfo.poster_path" [alt]="movieInfo.id">
+            </div>
             <div class="favourite-btn">
-                <span (click)="toFavourite()">{{isFavourite ?  'Remove from favourite' : 'Add to favourite'}}</span>
+                <span (click)="toFavourite()"
+                    class="fav-btn">{{isFavourite ?  'Remove from favourite' : 'Add to favourite'}}</span>
+                <span (click)="toFavourite()"
+                    [ngClass]="{'favourite-btn-mobile': isFavourite ?  'Remove from favourite' : 'Add to favourite'}"></span>
             </div>
-            <h1>{{movieInfo.original_title}}</h1>
+            <h1 class="movie-title">{{movieInfo.original_title}}</h1>
             <div class="movie-score">
-                <p>ID: {{movieInfo.id}}</p>
-                <p>Score: {{movieInfo.vote_average}}</p>
-                <p>Rating: {{movieRating}}</p>
-                <p>Release date: {{movieInfo.release_date}}</p>
+                <p>Score: <strong> {{movieInfo.vote_average}}</strong> </p>
+                <p>Rating: <strong> {{movieRating}}</strong> </p>
+                <p>Release date: <strong> {{movieInfo.release_date}}</strong> </p>
             </div>
+
+            <h1 class="movie-title-mobile">{{movieInfo.original_title}}</h1>
 
             <hr>
 

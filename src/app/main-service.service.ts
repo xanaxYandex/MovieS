@@ -32,17 +32,20 @@ export class MainServiceService {
     }
 
     showFavourites() {
+        console.log(JSON.parse(localStorage.getItem('favourites')));
+
         return this.favouriteMovies;
     }
 
     AddToFavourite(addId: number) {
         this.favouriteMovies.push(addId.toString());
-        console.log(this.favouriteMovies);
+
+
+        localStorage.setItem('favourites', JSON.stringify(this.favouriteMovies));
     }
 
     RemoveFromFavourite(removeId: number) {
         this.favouriteMovies.splice(this.favouriteMovies.indexOf(removeId.toString()), 1);
-        console.log(this.favouriteMovies);
     }
 
 }

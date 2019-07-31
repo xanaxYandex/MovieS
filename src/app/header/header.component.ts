@@ -9,8 +9,6 @@ export class HeaderComponent implements OnInit {
 
     public dropDown = 'none';
 
-    @Output() dropDownMenu: EventEmitter<any> = new EventEmitter();
-
     constructor() { }
 
     ngOnInit() {
@@ -25,7 +23,7 @@ export class HeaderComponent implements OnInit {
     }
 
     onDropDownClick(paragragh: string) {
-        this.dropDownMenu.emit(paragragh);
+
     }
 
 }

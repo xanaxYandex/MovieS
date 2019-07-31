@@ -1,5 +1,6 @@
 import { Movie, MainServiceService } from './../main-service.service';
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
     selector: 'app-movie-modal',
@@ -20,7 +21,7 @@ export class MovieModalComponent implements OnInit {
 
     public isFavourite = false;
 
-    constructor(private mainService: MainServiceService) { }
+    constructor(private mainService: MainServiceService, private _sanitizer: DomSanitizer) { }
 
     ngOnInit() {
         this.checkFavourite();
@@ -39,10 +40,9 @@ export class MovieModalComponent implements OnInit {
     }
 
     toNextMovie() {
-        console.log(this.mainService.showFavourites());
         this.nextMovie.emit(this.movieInfo.id);
-
         this.isFavourite = false;
+
         setTimeout(_ => {
             this.checkFavourite();
         }, 0);
@@ -65,6 +65,10 @@ export class MovieModalComponent implements OnInit {
                 this.isFavourite = true;
             }
         });
+    }
+
+    getBackground() {
+        return this._sanitizer.bypassSecurityTrustStyle(`${this.posterUrl}`);
     }
 
 }

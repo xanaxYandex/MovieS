@@ -1,6 +1,5 @@
 import { Movie, MainServiceService } from './../main-service.service';
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { delay } from 'q';
 
 @Component({
     selector: 'app-movie-modal',

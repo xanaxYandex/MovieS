@@ -1,4 +1,4 @@
-import { favouriteMovies } from './data/favourite';
+// import { favouriteMovies } from './data/favourite';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
@@ -21,6 +21,8 @@ export interface Movie {
 
 export class MainServiceService {
 
+    public favouriteMovies: string[] = ['420818', '566555'];
+
     constructor(private http: HttpClient) { }
 
     getMovies(currentPage: number): Observable<object> {
@@ -30,18 +32,17 @@ export class MainServiceService {
     }
 
     showFavourites() {
-        return favouriteMovies;
+        return this.favouriteMovies;
     }
 
     AddToFavourite(addId: number) {
-        favouriteMovies.push(addId);
-        console.log(favouriteMovies);
-
+        this.favouriteMovies.push(addId.toString());
+        console.log(this.favouriteMovies);
     }
 
     RemoveFromFavourite(removeId: number) {
-        favouriteMovies.filter(id => id !== removeId);
-        console.log(favouriteMovies);
+        this.favouriteMovies.splice(this.favouriteMovies.indexOf(removeId.toString()), 1);
+        console.log(this.favouriteMovies);
     }
 
 }

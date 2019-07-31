@@ -40,13 +40,18 @@ export class MovieModalComponent implements OnInit {
     }
 
     toNextMovie() {
+        console.log(this.mainService.showFavourites());
         this.nextMovie.emit(this.movieInfo.id);
-        this.isFavourite = !this.isFavourite;
-        this.checkFavourite();
+
+        this.isFavourite = false;
+        setTimeout(_ => {
+            this.checkFavourite();
+        }, 0);
+
     }
 
     toFavourite() {
-        if (this.isFavourite) {
+        if (!this.isFavourite) {
             this.mainService.AddToFavourite(this.movieInfo.id);
             this.isFavourite = !this.isFavourite;
         } else {
@@ -57,7 +62,7 @@ export class MovieModalComponent implements OnInit {
 
     checkFavourite() {
         this.mainService.showFavourites().forEach(elem => {
-            if (elem === this.movieInfo.id) {
+            if (+elem === this.movieInfo.id) {
                 this.isFavourite = true;
             }
         });

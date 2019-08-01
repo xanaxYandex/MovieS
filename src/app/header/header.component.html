@@ -3,8 +3,13 @@
         <img src="../../assets/globe-2-xxl.png" alt="planet-icon">
         <span>Movies</span>
     </a>
-    <div class="account_btn">
-        <span>My Account</span>
-        <img src="../../assets/white-down-arrow-png-2.png" alt="arrow-to-down">
+    <div class="dropdown">
+        <div class="dropbtn" (click)="dropDownState()">
+            <span></span>
+            <img src="../../assets/white-down-arrow-png-2.png" alt="arrow-to-down">
+        </div>
+        <div id="myDropdown" class="dropdown-content" [ngStyle]="{'display': dropDown}">
+            <span [routerLink]="[ '/favourites']">Favourites</span>
+        </div>
     </div>
 </div>

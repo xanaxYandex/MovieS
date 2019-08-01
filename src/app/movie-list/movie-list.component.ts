@@ -20,7 +20,6 @@ export class MovieListComponent implements OnInit {
 
     public pager: any = {};
 
-
     constructor(private mainService: MainServiceService, private pagerService: PagerService) { }
 
     ngOnInit() {
@@ -35,15 +34,6 @@ export class MovieListComponent implements OnInit {
         });
     }
 
-    goToModal(movie: object) {
-        this.selectedMovie = movie;
-        this.isSelectedMovie = true;
-    }
-
-    backToMovieList() {
-        this.isSelectedMovie = false;
-    }
-
     toNextMovie(movieId: number) {
         for (const key in this.movieList) {
             if (this.movieList.hasOwnProperty(key)) {
@@ -52,6 +42,21 @@ export class MovieListComponent implements OnInit {
                 if (element.id === movieId) {
                     this.selectedMovie = this.movieList.filter(movie => {
                         return movie.id === this.movieList[+key + 1].id;
+                    })[0];
+                    break;
+                }
+            }
+        }
+    }
+
+    toPreviousMovie(movieId: number) {
+        for (const key in this.movieList) {
+            if (this.movieList.hasOwnProperty(key)) {
+                const element = this.movieList[+key];
+
+                if (element.id === movieId) {
+                    this.selectedMovie = this.movieList.filter(movie => {
+                        return movie.id === this.movieList[+key - 1].id;
                     })[0];
                     break;
                 }

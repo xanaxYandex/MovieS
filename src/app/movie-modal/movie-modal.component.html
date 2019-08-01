@@ -1,13 +1,20 @@
 <div class="modal-movie" [style.background-image]="getBackground()">
     <div class="nav">
-        <div class="back-btn" (click)="backToMovieList()">
+        <div class="back-to-list-btn" [routerLink]="['']">
             <img src="../../assets/arrow_back_white_192x192.png" alt="">
             <span></span>
         </div>
-        <div class="next-btn" (click)="toNextMovie()">
-            <span></span>
-            <img src="../../assets/arrow_next_white_192x192 (копия).png" alt="">
+        <div class="next-back">
+            <div class="previous-btn">
+                <img src="../../assets/arrow_back_white_192x192.png" alt="">
+                <span></span>
+            </div>
+            <div class="next-btn" (click)="toNextMovie()">
+                <span></span>
+                <img src="../../assets/arrow_next_white_192x192 (копия).png" alt="">
+            </div>
         </div>
+
     </div>
     <div class="movie-post">
         <div class="movie-info">

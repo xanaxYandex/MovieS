@@ -1,6 +1,8 @@
 import { Movie, MainServiceService } from './../main-service.service';
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
+import { ActivatedRoute } from '@angular/router';
+import { error } from '@angular/compiler/src/util';
 
 @Component({
     selector: 'app-movie-modal',
@@ -9,11 +11,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 })
 export class MovieModalComponent implements OnInit {
 
-    @Input() movieInfo: Movie;
-
-    @Output() backToMovie: EventEmitter<any> = new EventEmitter();
-
-    @Output() nextMovie: EventEmitter<any> = new EventEmitter();
+    public movieInfo: Movie;
 
     public movieRating: string;
 
@@ -21,26 +19,35 @@ export class MovieModalComponent implements OnInit {
 
     public isFavourite = false;
 
-    constructor(private mainService: MainServiceService, private _sanitizer: DomSanitizer) { }
+    constructor(
+        private mainService: MainServiceService,
+        private sanitizer: DomSanitizer,
+        private route: ActivatedRoute
+    ) { }
 
     ngOnInit() {
+
+        this.mainService.getMovie(+this.route.snapshot.params['id']).subscribe(result => {
+            this.movieInfo = result as Movie;
+        });
+
         this.checkFavourite();
 
-        this.posterUrl = `http://image.tmdb.org/t/p/w500${this.movieInfo.poster_path}`;
-
-        if (this.movieInfo.adult) {
+        if (!this.movieInfo.adult) {
             this.movieRating = 'NC-17';
         } else {
             this.movieRating = 'R';
         }
     }
 
-    backToMovieList() {
-        this.backToMovie.emit();
-    }
+
 
     toNextMovie() {
-        this.nextMovie.emit(this.movieInfo.id);
+        this.mainService.getMovie(+this.mainService.toNextMovie(1, this.movieInfo.id)).subscribe(result => {
+            this.movieInfo = result as Movie;
+        });
+
+
         this.isFavourite = false;
 
         setTimeout(_ => {
@@ -61,14 +68,14 @@ export class MovieModalComponent implements OnInit {
 
     checkFavourite() {
         this.mainService.showFavourites().forEach(elem => {
-            if (+elem === this.movieInfo.id) {
+            if (+elem === +this.movieInfo.id) {
                 this.isFavourite = true;
             }
         });
     }
 
     getBackground() {
-        return this._sanitizer.bypassSecurityTrustStyle(`${this.posterUrl}`);
+        return this.sanitizer.bypassSecurityTrustStyle(`${this.posterUrl}`);
     }
 
 }

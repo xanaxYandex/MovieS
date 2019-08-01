@@ -20,9 +20,7 @@ export class HeaderComponent implements OnInit {
         } else {
             this.dropDown = 'none';
         }
-    }
-
-    onDropDownClick(paragragh: string) {
+        console.log(this.dropDown);
 
     }
 

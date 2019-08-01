@@ -9,9 +9,7 @@
             <img src="../../assets/white-down-arrow-png-2.png" alt="arrow-to-down">
         </div>
         <div id="myDropdown" class="dropdown-content" [ngStyle]="{'display': dropDown}">
-            <span (click)="onDropDownClick()">Favourites</span>
-            <span>Something</span>
-            <span>Something twice</span>
+            <span [routerLink]="[ '/favourites']">Favourites</span>
         </div>
     </div>
 </div>

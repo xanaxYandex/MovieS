@@ -5,7 +5,7 @@
         margin-bottom: 50px !important;
     }
 
-    .back-btn {
+    .back-to-list-btn {
         span {
             &::after {
                 content: 'Back' !important;
@@ -22,6 +22,7 @@
     }
 
     .modal-movie {
+        height: auto;
         padding: 30px 20px 40px 20px !important;
     }
 
@@ -75,19 +76,16 @@
         }
         
     }
-
-    
-
 }
 
 .modal-movie {
-    min-height: 100%;
-    height: auto;
+    height: 100%;
     font-family: 'Montserrat', sans-serif;
     background: rgba($color: #474141, $alpha: 1.0);
     background-image: none;
     background-size: contain;
     padding: 30px;
+    
     .nav {
         font-size: 20px;
         font-weight: 400;
@@ -98,7 +96,11 @@
         margin-bottom: 120px;
         margin-top: 40px;
 
-        .back-btn {
+        .next-back {
+            display: flex;
+        }
+
+        .back-to-list-btn {
             display: flex;
 
             img {
@@ -112,8 +114,23 @@
             }
         }
 
+        .previous-btn {
+            display: flex;
+
+            img {
+                width: 25px;
+                margin-right: 15px;
+            }
+            span {
+                &::after {
+                    content: 'Previous';
+                }
+            }
+        }
+
         .next-btn {
             display: flex; 
+            margin-left: 20px;
 
             img {
                 width: 25px;

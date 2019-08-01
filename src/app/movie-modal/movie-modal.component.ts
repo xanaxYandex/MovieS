@@ -1,7 +1,7 @@
 import { Movie, MainServiceService } from './../main-service.service';
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { error } from '@angular/compiler/src/util';
 
 @Component({
@@ -13,47 +13,52 @@ export class MovieModalComponent implements OnInit {
 
     public movieInfo: Movie;
 
-    public movieRating: string;
-
-    public posterUrl: string;
-
     public isFavourite = false;
+
+    public idParam: number;
 
     constructor(
         private mainService: MainServiceService,
         private sanitizer: DomSanitizer,
-        private route: ActivatedRoute
+        private route: ActivatedRoute,
+        private router: Router
     ) { }
 
     ngOnInit() {
-
-        this.mainService.getMovie(+this.route.snapshot.params['id']).subscribe(result => {
-            this.movieInfo = result as Movie;
+        this.route.params.subscribe(result => {
+            console.log(result);
+            this.idParam = +result['id'];
         });
 
-        this.checkFavourite();
+        console.log(this.idParam);
 
-        if (!this.movieInfo.adult) {
-            this.movieRating = 'NC-17';
-        } else {
-            this.movieRating = 'R';
-        }
+        this.mainService.getMovie(this.idParam).subscribe(result => {
+            this.movieInfo = result as Movie;
+            setTimeout(() => {
+                this.checkFavourite();
+            }, 0);
+        });
     }
 
-
-
     toNextMovie() {
-        this.mainService.getMovie(+this.mainService.toNextMovie(1, this.movieInfo.id)).subscribe(result => {
+        this.router.navigate(['modal', 420818]);
+        // this.mainService.getMovie(+this.mainService.toNextMovie(this.movieInfo.id)).subscribe(result => {
+        //     this.movieInfo = result as Movie;
+        //     this.isFavourite = false;
+        //     setTimeout(_ => {
+        //         this.checkFavourite();
+        //     }, 0);
+        // });
+    }
+
+    toPreviousMovie() {
+        this.mainService.getMovie(+this.mainService.toPreviousMovie(this.movieInfo.id)).subscribe(result => {
             this.movieInfo = result as Movie;
+            this.isFavourite = false;
+            setTimeout(_ => {
+                this.checkFavourite();
+            }, 0);
         });
-
-
-        this.isFavourite = false;
-
-        setTimeout(_ => {
-            this.checkFavourite();
-        }, 0);
-
     }
 
     toFavourite() {
@@ -72,10 +77,6 @@ export class MovieModalComponent implements OnInit {
                 this.isFavourite = true;
             }
         });
-    }
-
-    getBackground() {
-        return this.sanitizer.bypassSecurityTrustStyle(`${this.posterUrl}`);
     }
 
 }

@@ -23,11 +23,9 @@ export interface Movie {
 
 export class MainServiceService {
 
-    public favouriteMovies: string[] = ['420818', '566555'];
+    public favouriteMovies: string[] = [];
 
     public infoTransitor: BehaviorSubject<any> = new BehaviorSubject(0);
-
-    public selectedMovie: object;
 
     constructor(private http: HttpClient) {
         this.favouriteMovies = JSON.parse(localStorage.getItem('favourites'));
@@ -41,52 +39,54 @@ export class MainServiceService {
     }
 
     getMovie(movieId: number) {
-        console.log(3);
-
         return this.http.get(`https://api.themoviedb.org/3/movie/${movieId}?api_key=ebea8cfca72fdff8d2624ad7bbf78e4c&language=en-US`);
     }
 
     showFavourites() {
-        console.log(JSON.parse(localStorage.getItem('favourites')));
-
         return this.favouriteMovies;
     }
 
     AddToFavourite(addId: number) {
         this.favouriteMovies.push(addId.toString());
-
         localStorage.setItem('favourites', JSON.stringify(this.favouriteMovies));
     }
 
     RemoveFromFavourite(removeId: number) {
         this.favouriteMovies.splice(this.favouriteMovies.indexOf(removeId.toString()), 1);
-
         localStorage.setItem('favourites', JSON.stringify(this.favouriteMovies));
     }
 
-    toNextMovie(page: number, movieId: number) {
-        let promise = new Promise((resolve, reject) => {
-            this.getMovies(page).subscribe(result => {
-                let nextId;
-                let movies;
-                movies = result['results'];
-                for (const key in movies) {
-                    if (movies.hasOwnProperty(key)) {
-                        const element = movies[+key];
-                        if (element.id === +movieId) {
-                            resolve(movies[(+key) + 1].id);
-                            console.log(1);
-                            break;
-                        }
-                    }
-                }
-            });
+    toNextMovie(movieId: number): number {
+        let selectedMovie: object;
+
+        this.infoTransitor.subscribe({
+            next: result => selectedMovie = result
         });
 
-        promise.then(response => {
-            console.log(2);
-            return response;
-        });
+        for (const key in selectedMovie) {
+            if (selectedMovie.hasOwnProperty(key)) {
+                const element = selectedMovie[+key];
+                if (element.id === +movieId) {
+                    return selectedMovie[(+key) + 1].id;
+                }
+            }
+        }
     }
 
+    toPreviousMovie(movieId: number): number {
+        let selectedMovie: object;
+
+        this.infoTransitor.subscribe({
+            next: result => selectedMovie = result
+        });
+
+        for (const key in selectedMovie) {
+            if (selectedMovie.hasOwnProperty(key)) {
+                const element = selectedMovie[+key];
+                if (element.id === +movieId) {
+                    return selectedMovie[(+key) - 1].id;
+                }
+            }
+        }
+    }
 }

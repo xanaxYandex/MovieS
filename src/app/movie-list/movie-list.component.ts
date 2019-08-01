@@ -14,10 +14,6 @@ export class MovieListComponent implements OnInit {
 
     public countOfPages: number;
 
-    public selectedMovie: object;
-
-    public isSelectedMovie = false;
-
     public pager: any = {};
 
     constructor(private mainService: MainServiceService, private pagerService: PagerService) { }
@@ -29,40 +25,18 @@ export class MovieListComponent implements OnInit {
     setPage(page: number = 1) {
         this.mainService.getMovies(page).subscribe(response => {
             this.movieList = response['results'];
+            this.mainService.infoTransitor.next(this.movieList);
             this.countOfPages = response['total_pages'];
             this.pager = this.pagerService.getPager(response['total_results'], page, 20);
         });
-    }
-
-    toNextMovie(movieId: number) {
         for (const key in this.movieList) {
             if (this.movieList.hasOwnProperty(key)) {
-                const element = this.movieList[+key];
-
-                if (element.id === movieId) {
-                    this.selectedMovie = this.movieList.filter(movie => {
-                        return movie.id === this.movieList[+key + 1].id;
-                    })[0];
-                    break;
+                const element = this.movieList[key];
+                
+                if (element.poster_path === 'https://image.tmdb.org/t/p/w500null') {
+                    this.movieList[key].poster_path = '../../assets/_Error_Document_Page-512.png';
                 }
             }
         }
     }
-
-    toPreviousMovie(movieId: number) {
-        for (const key in this.movieList) {
-            if (this.movieList.hasOwnProperty(key)) {
-                const element = this.movieList[+key];
-
-                if (element.id === movieId) {
-                    this.selectedMovie = this.movieList.filter(movie => {
-                        return movie.id === this.movieList[+key - 1].id;
-                    })[0];
-                    break;
-                }
-            }
-        }
-    }
-
-
 }

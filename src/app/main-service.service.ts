@@ -86,8 +86,6 @@ export class MainServiceService {
                     movieList = result;
                 }
             });
-
-            console.log(0);
             
             if (+movieList[movieList.length - 1].id === +movieId && this.flag === false) {
                 this.pageTransition.next(++this.currentPage);
@@ -96,8 +94,6 @@ export class MainServiceService {
                     if (movieList.hasOwnProperty(key)) {
                         const element = movieList[+key];
                         if (element.id === +movieId) {
-                            console.log(1);
-                            
                             return movieList[(+key)].id;
                         }
                     }
@@ -109,8 +105,6 @@ export class MainServiceService {
                     if (movieList.hasOwnProperty(key)) {
                         const element = movieList[+key];
                         if (element.id === +movieId) {
-                            console.log(2);
-                            
                             return movieList[(+key) + 1].id;
                         }
                     }
@@ -119,8 +113,6 @@ export class MainServiceService {
                 this.flag = false;
                 for (const key in movieList) {
                     if (movieList.hasOwnProperty(key)) {
-                        console.log(3);
-                        
                         return movieList[key].id;
                     }
                 }

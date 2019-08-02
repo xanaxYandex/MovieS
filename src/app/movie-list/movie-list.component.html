@@ -15,9 +15,9 @@
             <div [ngClass]="{disabled:pager.currentPage === 1}">
                 <span (click)="setPage(pager.currentPage - 1)">Previous</span>
             </div>
-            <div *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}"
+            <div *ngFor="let page of pager.pages" 
                 class="pagination-pages">
-                <span (click)="setPage(page)">{{page}}</span>
+                <span (click)="setPage(page)" [ngClass]="{active:pager.currentPage === page}">{{page}}</span>
             </div>
             <div [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
                 <span (click)="setPage(pager.currentPage + 1)">Next</span>

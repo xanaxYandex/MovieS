@@ -51,6 +51,8 @@
         .favourite-btn {
             position: absolute;
             right: 20px;
+            
+            
         }
 
         .fav-btn {
@@ -127,7 +129,18 @@
         }
 
         .back-to-list-btn {
+            transition: 0.3s;
+            border-radius: 30px;
+            padding: 15px;
             display: flex;
+
+            &:hover {
+                cursor: pointer;
+                transition: 0.3s;
+                box-shadow: 0 0 35px rgba($color: burlywood, $alpha: 1.0); 
+                background: burlywood;
+                color: black;
+            }
 
             img {
                 width: 25px;
@@ -137,11 +150,23 @@
                 &::after {
                     content: 'Back to list';
                 }
+                
             }
         }
 
         .previous-btn {
+            transition: 0.3s;
+            border-radius: 30px;
+            padding: 15px;
             display: flex;
+
+            &:hover {
+                cursor: pointer;
+                transition: 0.3s;
+                box-shadow: 0 0 35px rgba($color: burlywood, $alpha: 1.0);
+                background: burlywood;
+                color: black;
+            }
 
             img {
                 width: 25px;
@@ -155,8 +180,19 @@
         }
 
         .next-btn {
+            transition: 0.3s;
+            border-radius: 30px;
+            padding: 15px;
             display: flex; 
             margin-left: 20px;
+
+            &:hover {
+                cursor: pointer;
+                transition: 0.3s;
+                box-shadow: 0 0 35px rgba($color: burlywood, $alpha: 1.0);
+                background: burlywood;
+                color: black;
+            }
 
             img {
                 width: 25px;
@@ -190,11 +226,20 @@
             justify-content: flex-end;
 
             span {
+                transition: 0.3s;
                 border: 1px solid rgba(160, 160, 160, 0.822);
                 border-radius: 5px;
                 padding: 10px 10px 10px 10px;
                 font-weight: 400;
                 color: rgb(175, 175, 175);
+
+                &:hover {
+                    cursor: pointer;
+                    transition: 0.3s;
+                    box-shadow: 0 0 35px rgba($color: burlywood, $alpha: 1.0);
+                    background: burlywood;
+                    color: black; 
+                }
             }
         }
 

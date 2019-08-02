@@ -24,6 +24,7 @@ export class MovieListComponent implements OnInit {
     }
 
     setPage(page: number = 1) {
+        this.mainService.currentPage = page;
         this.mainService.getMovies(page).subscribe(response => {
             this.mainService.infoTransition.next(response['results']);
             this.movieList = response['results'];

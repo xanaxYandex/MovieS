@@ -89,5 +89,12 @@
         display: flex;
         justify-content: center;
         padding-bottom: 30px;
+
+        .active {
+            background: #000000;
+            color: rgb(165, 165, 165);
+            border: 3px solid rgb(0, 0, 0);
+            box-shadow: 0 0 20px rgb(0, 0, 0);
+        }
     }
 }

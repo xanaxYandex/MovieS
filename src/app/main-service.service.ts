@@ -87,46 +87,44 @@ export class MainServiceService {
                 }
             });
 
-            if (+movieList[movieList.length - 2].id === +movieId && this.flag === false) {
-                console.log('34234');
-
+            console.log(0);
+            
+            if (+movieList[movieList.length - 1].id === +movieId && this.flag === false) {
                 this.pageTransition.next(++this.currentPage);
                 this.flag = true;
                 for (const key in movieList) {
                     if (movieList.hasOwnProperty(key)) {
                         const element = movieList[+key];
                         if (element.id === +movieId) {
-                            return movieList[(+key) + 1].id;
+                            console.log(1);
+                            
+                            return movieList[(+key)].id;
                         }
                     }
                 }
-                // return +movieList[movieList.length - 1].id;
             }
-
-
-
 
             if (!this.flag) {
                 for (const key in movieList) {
                     if (movieList.hasOwnProperty(key)) {
                         const element = movieList[+key];
                         if (element.id === +movieId) {
+                            console.log(2);
+                            
                             return movieList[(+key) + 1].id;
                         }
                     }
                 }
             } else {
                 this.flag = false;
-                console.log(movieList);
                 for (const key in movieList) {
                     if (movieList.hasOwnProperty(key)) {
+                        console.log(3);
+                        
                         return movieList[key].id;
                     }
                 }
             }
-
-
-
         }
     }
 
@@ -141,17 +139,41 @@ export class MainServiceService {
                 }
             }
         } else {
-            let movieList: object;
+            let movieList: Movie[] = [];
 
             this.infoTransition.subscribe({
-                next: result => movieList = result
+                next: result => {
+                    movieList = result;
+                }
             });
 
-            for (const key in movieList) {
-                if (movieList.hasOwnProperty(key)) {
-                    const element = movieList[+key];
-                    if (element.id === +movieId) {
-                        return movieList[(+key) - 1].id;
+            if (+movieList[0].id === +movieId && this.flag === false) {
+                this.pageTransition.next(--this.currentPage);
+                this.flag = true;
+                for (const key in movieList) {
+                    if (movieList.hasOwnProperty(key)) {
+                        const element = movieList[+key];
+                        if (element.id === +movieId) {
+                            return movieList[(+key)].id;
+                        }
+                    }
+                }
+            }
+
+            if (!this.flag) {
+                for (const key in movieList) {
+                    if (movieList.hasOwnProperty(key)) {
+                        const element = movieList[+key];
+                        if (element.id === +movieId) {
+                            return movieList[(+key) - 1].id;
+                        }
+                    }
+                }
+            } else {
+                this.flag = false;
+                for (const key in movieList) {
+                    if (movieList.hasOwnProperty(key)) {
+                        return movieList[movieList.length - 1].id;
                     }
                 }
             }

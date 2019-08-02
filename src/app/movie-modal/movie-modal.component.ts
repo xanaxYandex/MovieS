@@ -27,6 +27,7 @@ export class MovieModalComponent implements OnInit {
     ) { }
 
     ngOnInit() {
+        this.mainService.pageTransition.next(this.mainService.currentPage);
         this.route.params.subscribe(result => {
             this.idParam = +result['id'];
         });
@@ -38,69 +39,82 @@ export class MovieModalComponent implements OnInit {
                 this.checkFavourite();
             }, 0);
         });
-
-        // this.mainService.getMovie(this.idParam).then(response => {
-        //     response.subscribe(result => {
-        //         this.movieInfo = result as Movie;
-        //         this.backColor = `http://image.tmdb.org/t/p/w500${this.movieInfo.backdrop_path}`;
-        //         setTimeout(() => {
-        //             this.checkFavourite();
-        //         }, 0);
-        //     });
-
-        // });
     }
 
     toNextMovie() {
-        if (!this.route.snapshot.queryParams['favourite']) {
-            this.mainService.getMovie(+this.mainService.toNextMovie(this.movieInfo.id)).subscribe(result => {
-                this.router.navigate(
-                    ['/modal', +this.mainService.toNextMovie(this.movieInfo.id)],
-                    {
-                        queryParams: {
-                            favorite: false
+        let id = +this.mainService.toNextMovie(this.movieInfo.id);
+
+        setTimeout(() => {
+            if (+id === +this.movieInfo.id) {
+                id = +this.mainService.toNextMovie(this.movieInfo.id);
+            }
+    
+            if (!this.route.snapshot.queryParams['favourite']) {
+                this.mainService.getMovie(id).subscribe(result => {
+                    this.router.navigate(
+                        ['/modal', result['id']],
+                        {
+                            queryParams: {
+                                favorite: false
+                            }
                         }
-                    }
-                );
-                this.movieInfo = result as Movie;
-                this.backColor = `http://image.tmdb.org/t/p/w500${this.movieInfo.backdrop_path}`;
-                this.isFavourite = false;
-                setTimeout(_ => {
-                    this.checkFavourite();
-                }, 0);
-            });
-        } else {
-            this.mainService.getMovie(+this.mainService.toNextMovie(this.movieInfo.id, true)).subscribe(result => {
-                this.movieInfo = result as Movie;
-                this.backColor = `http://image.tmdb.org/t/p/w500${this.movieInfo.backdrop_path}`;
-                this.isFavourite = false;
-                setTimeout(_ => {
-                    this.checkFavourite();
-                }, 0);
-            });
-        }
+                    );
+                    this.movieInfo = result as Movie;
+                    this.backColor = `http://image.tmdb.org/t/p/w500${this.movieInfo.backdrop_path}`;
+                    this.isFavourite = false;
+                    setTimeout(_ => {
+                        this.checkFavourite();
+                    }, 0);
+                });
+            } else {
+                this.mainService.getMovie(+this.mainService.toNextMovie(this.movieInfo.id, true)).subscribe(result => {
+                    this.movieInfo = result as Movie;
+                    this.backColor = `http://image.tmdb.org/t/p/w500${this.movieInfo.backdrop_path}`;
+                    this.isFavourite = false;
+                    setTimeout(_ => {
+                        this.checkFavourite();
+                    }, 0);
+                });
+            }
+        }, 50);
     }
 
     toPreviousMovie() {
-        if (!this.route.snapshot.queryParams['favourite']) {
-            this.mainService.getMovie(+this.mainService.toPreviousMovie(this.movieInfo.id)).subscribe(result => {
-                this.movieInfo = result as Movie;
-                this.backColor = `http://image.tmdb.org/t/p/w500${this.movieInfo.backdrop_path}`;
-                this.isFavourite = false;
-                setTimeout(_ => {
-                    this.checkFavourite();
-                }, 0);
-            });
-        } else {
-            this.mainService.getMovie(+this.mainService.toPreviousMovie(this.movieInfo.id, true)).subscribe(result => {
-                this.movieInfo = result as Movie;
-                this.backColor = `http://image.tmdb.org/t/p/w500${this.movieInfo.backdrop_path}`;
-                this.isFavourite = false;
-                setTimeout(_ => {
-                    this.checkFavourite();
-                }, 0);
-            });
-        }
+        let id = +this.mainService.toPreviousMovie(this.movieInfo.id);
+
+        setTimeout(() => {
+            if (+id === +this.movieInfo.id) {
+                id = +this.mainService.toPreviousMovie(this.movieInfo.id);
+            }
+
+            if (!this.route.snapshot.queryParams['favourite']) {
+                this.mainService.getMovie(id).subscribe(result => {
+                    this.router.navigate(
+                        ['/modal', result['id']],
+                        {
+                            queryParams: {
+                                favorite: false
+                            }
+                        }
+                    );
+                    this.movieInfo = result as Movie;
+                    this.backColor = `http://image.tmdb.org/t/p/w500${this.movieInfo.backdrop_path}`;
+                    this.isFavourite = false;
+                    setTimeout(_ => {
+                        this.checkFavourite();
+                    }, 0);
+                });
+            } else {
+                this.mainService.getMovie(+this.mainService.toPreviousMovie(this.movieInfo.id, true)).subscribe(result => {
+                    this.movieInfo = result as Movie;
+                    this.backColor = `http://image.tmdb.org/t/p/w500${this.movieInfo.backdrop_path}`;
+                    this.isFavourite = false;
+                    setTimeout(_ => {
+                        this.checkFavourite();
+                    }, 0);
+                });
+            }
+        }, 50);
     }
 
     toFavourite() {

@@ -1,5 +1,5 @@
 import { Movie, MainServiceService } from './../main-service.service';
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, Query } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { error } from '@angular/compiler/src/util';
@@ -17,6 +17,8 @@ export class MovieModalComponent implements OnInit {
 
     public idParam: number;
 
+    public backColor: string;
+
     constructor(
         private mainService: MainServiceService,
         private sanitizer: DomSanitizer,
@@ -26,53 +28,93 @@ export class MovieModalComponent implements OnInit {
 
     ngOnInit() {
         this.route.params.subscribe(result => {
-            console.log(result);
             this.idParam = +result['id'];
         });
 
-        console.log(this.idParam);
-
         this.mainService.getMovie(this.idParam).subscribe(result => {
             this.movieInfo = result as Movie;
+            this.backColor = `http://image.tmdb.org/t/p/w500${this.movieInfo.backdrop_path}`;
             setTimeout(() => {
                 this.checkFavourite();
             }, 0);
         });
-    }
 
-    toNextMovie() {
-        this.router.navigate(['modal', 420818]);
-        // this.mainService.getMovie(+this.mainService.toNextMovie(this.movieInfo.id)).subscribe(result => {
-        //     this.movieInfo = result as Movie;
-        //     this.isFavourite = false;
-        //     setTimeout(_ => {
-        //         this.checkFavourite();
-        //     }, 0);
+        // this.mainService.getMovie(this.idParam).then(response => {
+        //     response.subscribe(result => {
+        //         this.movieInfo = result as Movie;
+        //         this.backColor = `http://image.tmdb.org/t/p/w500${this.movieInfo.backdrop_path}`;
+        //         setTimeout(() => {
+        //             this.checkFavourite();
+        //         }, 0);
+        //     });
+
         // });
     }
 
+    toNextMovie() {
+        if (!this.route.snapshot.queryParams['favourite']) {
+            this.mainService.getMovie(+this.mainService.toNextMovie(this.movieInfo.id)).subscribe(result => {
+                this.router.navigate(
+                    ['/modal', +this.mainService.toNextMovie(this.movieInfo.id)],
+                    {
+                        queryParams: {
+                            favorite: false
+                        }
+                    }
+                );
+                this.movieInfo = result as Movie;
+                this.backColor = `http://image.tmdb.org/t/p/w500${this.movieInfo.backdrop_path}`;
+                this.isFavourite = false;
+                setTimeout(_ => {
+                    this.checkFavourite();
+                }, 0);
+            });
+        } else {
+            this.mainService.getMovie(+this.mainService.toNextMovie(this.movieInfo.id, true)).subscribe(result => {
+                this.movieInfo = result as Movie;
+                this.backColor = `http://image.tmdb.org/t/p/w500${this.movieInfo.backdrop_path}`;
+                this.isFavourite = false;
+                setTimeout(_ => {
+                    this.checkFavourite();
+                }, 0);
+            });
+        }
+    }
+
     toPreviousMovie() {
-        this.mainService.getMovie(+this.mainService.toPreviousMovie(this.movieInfo.id)).subscribe(result => {
-            this.movieInfo = result as Movie;
-            this.isFavourite = false;
-            setTimeout(_ => {
-                this.checkFavourite();
-            }, 0);
-        });
+        if (!this.route.snapshot.queryParams['favourite']) {
+            this.mainService.getMovie(+this.mainService.toPreviousMovie(this.movieInfo.id)).subscribe(result => {
+                this.movieInfo = result as Movie;
+                this.backColor = `http://image.tmdb.org/t/p/w500${this.movieInfo.backdrop_path}`;
+                this.isFavourite = false;
+                setTimeout(_ => {
+                    this.checkFavourite();
+                }, 0);
+            });
+        } else {
+            this.mainService.getMovie(+this.mainService.toPreviousMovie(this.movieInfo.id, true)).subscribe(result => {
+                this.movieInfo = result as Movie;
+                this.backColor = `http://image.tmdb.org/t/p/w500${this.movieInfo.backdrop_path}`;
+                this.isFavourite = false;
+                setTimeout(_ => {
+                    this.checkFavourite();
+                }, 0);
+            });
+        }
     }
 
     toFavourite() {
         if (!this.isFavourite) {
-            this.mainService.AddToFavourite(this.movieInfo.id);
+            this.mainService.AddToFavorite(this.movieInfo.id);
             this.isFavourite = !this.isFavourite;
         } else {
-            this.mainService.RemoveFromFavourite(this.movieInfo.id);
+            this.mainService.RemoveFromFavorite(this.movieInfo.id);
             this.isFavourite = !this.isFavourite;
         }
     }
 
     checkFavourite() {
-        this.mainService.showFavourites().forEach(elem => {
+        this.mainService.showFavorites().forEach(elem => {
             if (+elem === +this.movieInfo.id) {
                 this.isFavourite = true;
             }

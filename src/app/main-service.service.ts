@@ -23,12 +23,18 @@ export interface Movie {
 
 export class MainServiceService {
 
-    public favouriteMovies: string[] = [];
+    public favoriteMovies: string[] = [];
 
-    public infoTransitor: BehaviorSubject<any> = new BehaviorSubject(0);
+    public currentPage = 1;
+
+    public infoTransition: BehaviorSubject<any> = new BehaviorSubject(0);
+
+    public pageTransition: BehaviorSubject<any> = new BehaviorSubject(this.currentPage);
+
+    public flag = false;
 
     constructor(private http: HttpClient) {
-        this.favouriteMovies = JSON.parse(localStorage.getItem('favourites'));
+        this.favoriteMovies = JSON.parse(localStorage.getItem('favourites'));
     }
 
     getMovies(currentPage: number): Observable<object> {
@@ -38,53 +44,115 @@ export class MainServiceService {
             .get(`https://api.themoviedb.org/3/movie/now_playing?api_key=ebea8cfca72fdff8d2624ad7bbf78e4c&language=en-US&page=${currentPage}`);
     }
 
-    getMovie(movieId: number) {
-        return this.http.get(`https://api.themoviedb.org/3/movie/${movieId}?api_key=ebea8cfca72fdff8d2624ad7bbf78e4c&language=en-US`);
+    getMovie(movieId?: number) {
+        if (!movieId) {
+            return this.http.get(`https://api.themoviedb.org/3/movie/${486589}?api_key=ebea8cfca72fdff8d2624ad7bbf78e4c&language=en-US`);
+        } else {
+            // tslint:disable-next-line:max-line-length
+            return this.http.get(`https://api.themoviedb.org/3/movie/${movieId}?api_key=ebea8cfca72fdff8d2624ad7bbf78e4c&language=en-US`);
+        }
+
     }
 
-    showFavourites() {
-        return this.favouriteMovies;
+    showFavorites(): string[] {
+        return this.favoriteMovies;
     }
 
-    AddToFavourite(addId: number) {
-        this.favouriteMovies.push(addId.toString());
-        localStorage.setItem('favourites', JSON.stringify(this.favouriteMovies));
+    AddToFavorite(addId: number) {
+        this.favoriteMovies.push(addId.toString());
+        localStorage.setItem('favourites', JSON.stringify(this.favoriteMovies));
     }
 
-    RemoveFromFavourite(removeId: number) {
-        this.favouriteMovies.splice(this.favouriteMovies.indexOf(removeId.toString()), 1);
-        localStorage.setItem('favourites', JSON.stringify(this.favouriteMovies));
+    RemoveFromFavorite(removeId: number) {
+        this.favoriteMovies.splice(this.favoriteMovies.indexOf(removeId.toString()), 1);
+        localStorage.setItem('favourites', JSON.stringify(this.favoriteMovies));
     }
 
-    toNextMovie(movieId: number): number {
-        let selectedMovie: object;
-
-        this.infoTransitor.subscribe({
-            next: result => selectedMovie = result
-        });
-
-        for (const key in selectedMovie) {
-            if (selectedMovie.hasOwnProperty(key)) {
-                const element = selectedMovie[+key];
-                if (element.id === +movieId) {
-                    return selectedMovie[(+key) + 1].id;
+    toNextMovie(movieId: number, isFavourite: boolean = false): number {
+        if (isFavourite) {
+            for (const key in this.favoriteMovies) {
+                if (this.favoriteMovies.hasOwnProperty(key)) {
+                    const element = this.favoriteMovies[key];
+                    if (+element === +movieId) {
+                        return +this.favoriteMovies[(+key) + 1];
+                    }
                 }
             }
+        } else {
+            let movieList: Movie[] = [];
+
+            this.infoTransition.subscribe({
+                next: result => {
+                    movieList = result;
+                }
+            });
+
+            if (+movieList[movieList.length - 2].id === +movieId && this.flag === false) {
+                console.log('34234');
+
+                this.pageTransition.next(++this.currentPage);
+                this.flag = true;
+                for (const key in movieList) {
+                    if (movieList.hasOwnProperty(key)) {
+                        const element = movieList[+key];
+                        if (element.id === +movieId) {
+                            return movieList[(+key) + 1].id;
+                        }
+                    }
+                }
+                // return +movieList[movieList.length - 1].id;
+            }
+
+
+
+
+            if (!this.flag) {
+                for (const key in movieList) {
+                    if (movieList.hasOwnProperty(key)) {
+                        const element = movieList[+key];
+                        if (element.id === +movieId) {
+                            return movieList[(+key) + 1].id;
+                        }
+                    }
+                }
+            } else {
+                this.flag = false;
+                console.log(movieList);
+                for (const key in movieList) {
+                    if (movieList.hasOwnProperty(key)) {
+                        return movieList[key].id;
+                    }
+                }
+            }
+
+
+
         }
     }
 
-    toPreviousMovie(movieId: number): number {
-        let selectedMovie: object;
+    toPreviousMovie(movieId: number, isFavourite: boolean = false): number {
+        if (isFavourite) {
+            for (const key in this.favoriteMovies) {
+                if (this.favoriteMovies.hasOwnProperty(key)) {
+                    const element = this.favoriteMovies[key];
+                    if (+element === +movieId) {
+                        return +this.favoriteMovies[(+key) - 1];
+                    }
+                }
+            }
+        } else {
+            let movieList: object;
 
-        this.infoTransitor.subscribe({
-            next: result => selectedMovie = result
-        });
+            this.infoTransition.subscribe({
+                next: result => movieList = result
+            });
 
-        for (const key in selectedMovie) {
-            if (selectedMovie.hasOwnProperty(key)) {
-                const element = selectedMovie[+key];
-                if (element.id === +movieId) {
-                    return selectedMovie[(+key) - 1].id;
+            for (const key in movieList) {
+                if (movieList.hasOwnProperty(key)) {
+                    const element = movieList[+key];
+                    if (element.id === +movieId) {
+                        return movieList[(+key) - 1].id;
+                    }
                 }
             }
         }

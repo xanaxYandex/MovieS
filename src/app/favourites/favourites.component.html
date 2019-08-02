@@ -1,1 +1,9 @@
-<p>favourites works!</p>
+<div class="movie-list">
+    <p>Favourites</p>
+    <div class="movie-elements">
+        <div class="movie-item" *ngFor="let item of favoriteMovies" (click)="toModal(item.id)">
+            <img [src]=" item.poster_path===null ? '../../assets/_Error_Document_Page-512.png' :
+            ('http://image.tmdb.org/t/p/w500' + item.poster_path)" [alt]="item.id">
+        </div>
+    </div>
+</div>

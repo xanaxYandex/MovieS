@@ -12,6 +12,8 @@
 }
 
 .header {
+    position: relative;
+    z-index: 3;
     $text-color: rgb(211, 211, 211) !important;
     font-family: 'Montserrat', sans-serif;
     background: rgba($color: #43434b, $alpha: 1.0);
@@ -101,6 +103,7 @@
         z-index: 1;
         
             span {
+                cursor: pointer;
                 transition: 0.3s;
                 color: black !important;
                 padding: 12px 16px;

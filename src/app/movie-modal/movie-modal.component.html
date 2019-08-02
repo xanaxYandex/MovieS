@@ -1,3 +1,4 @@
+<div class="bg" [style.background-image]="'url('+ backColor +')'"></div>
 <div class="modal-movie">
     <div class="nav">
         <div class="back-to-list-btn" [routerLink]="['']">
@@ -9,7 +10,7 @@
                 <img src="../../assets/arrow_back_white_192x192.png" alt="">
                 <span></span>
             </div>
-            <div class="next-btn" (click)="toNextMovie()" >
+            <div class="next-btn" (click)="toNextMovie()">
                 <span></span>
                 <img src="../../assets/arrow_next_white_192x192 (копия).png" alt="">
             </div>
@@ -19,7 +20,8 @@
     <div class="movie-post">
         <div class="movie-info">
             <div class="movie-img">
-                <img [src]="movieInfo.poster_path === null ? '../../assets/_Error_Document_Page-512.png' : ('http://image.tmdb.org/t/p/w500' + movieInfo.poster_path)" [alt]="movieInfo.id">
+                <img [src]="movieInfo.poster_path === null ? '../../assets/_Error_Document_Page-512.png' : ('http://image.tmdb.org/t/p/w500' + movieInfo.poster_path)"
+                    [alt]="movieInfo.id">
             </div>
             <div class="favourite-btn">
                 <span (click)="toFavourite()"
@@ -44,4 +46,5 @@
 
         </div>
     </div>
+
 </div>

@@ -1,5 +1,5 @@
 <div class="header">
-    <a href="">
+    <a [routerLink]="['/']">
         <img src="../../assets/globe-2-xxl.png" alt="planet-icon">
         <span>Movies</span>
     </a>
@@ -9,7 +9,7 @@
             <img src="../../assets/white-down-arrow-png-2.png" alt="arrow-to-down">
         </div>
         <div id="myDropdown" class="dropdown-content" [ngStyle]="{'display': dropDown}">
-            <span [routerLink]="[ '/favourites']">Favourites</span>
+            <span [routerLink]="[ '/favourites']" (click)="dropDownState()">Favourites</span>
         </div>
     </div>
 </div>

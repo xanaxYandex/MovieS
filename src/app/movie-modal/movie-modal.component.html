@@ -1,18 +1,22 @@
 <div class="bg" [style.background-image]="'url('+ backColor +')'"></div>
 <div class="modal-movie">
     <div class="nav">
-        <div class="back-to-list-btn" [routerLink]="['']">
+        <div *ngIf="!isFavouritePage" class="back-to-list-btn" [routerLink]="['/page/', this.mainService.currentPage]">
+            <img src="../../assets/arrow_back_white_192x192.png" alt="">
+            <span></span>
+        </div>
+        <div *ngIf="isFavouritePage" class="back-to-list-btn" [routerLink]="['/favourites']">
             <img src="../../assets/arrow_back_white_192x192.png" alt="">
             <span></span>
         </div>
         <div class="next-back">
-            <div class="previous-btn" (click)="toPreviousMovie()">
+            <div class="previous-btn" (click)="toPreviousMovie()" [style.display]="prevVision">
                 <img src="../../assets/arrow_back_white_192x192.png" alt="">
                 <span></span>
             </div>
-            <div class="next-btn" (click)="toNextMovie()">
+            <div class="next-btn" (click)="toNextMovie()" [style.display]="nextVision">
                 <span></span>
-                <img src="../../assets/arrow_next_white_192x192 (копия).png" alt="">
+                <img src="../../assets/arrow_next_white_192x192.png" alt="">
             </div>
         </div>
 
@@ -20,8 +24,7 @@
     <div class="movie-post">
         <div class="movie-info">
             <div class="movie-img">
-                <img [src]="movieInfo.poster_path === null ? '../../assets/_Error_Document_Page-512.png' : ('http://image.tmdb.org/t/p/w500' + movieInfo.poster_path)"
-                    [alt]="movieInfo.id">
+                <img [src]="posterUrl" [alt]="movieInfo?.id">
             </div>
             <div class="favourite-btn">
                 <span (click)="toFavourite()"
@@ -29,18 +32,18 @@
                 <span (click)="toFavourite()"
                     [ngClass]="{'favourite-btn-mobile': isFavourite ?  'Remove from favourite' : 'Add to favourite'}"></span>
             </div>
-            <h1 class="movie-title">{{movieInfo.original_title}}</h1>
+            <h1 class="movie-title">{{movieInfo?.original_title}}</h1>
             <div class="movie-score">
-                <p>Score: <strong> {{movieInfo.vote_average}}</strong> </p>
-                <p>Rating: <strong> {{movieInfo.adult ? 'NC-17' : 'R' }}</strong> </p>
-                <p>Release date: <strong> {{movieInfo.release_date}}</strong> </p>
+                <p>Score: <strong> {{movieInfo?.vote_average}}</strong> </p>
+                <p>Rating: <strong> {{movieInfo?.adult ? 'NC-17' : 'R' }}</strong> </p>
+                <p>Release date: <strong> {{movieInfo?.release_date}}</strong> </p>
             </div>
 
-            <h1 class="movie-title-mobile">{{movieInfo.original_title}}</h1>
+            <h1 class="movie-title-mobile">{{movieInfo?.original_title}}</h1>
 
             <hr>
 
-            <p>{{movieInfo.overview}}</p>
+            <p>{{movieInfo?.overview}}</p>
 
             <hr>
 

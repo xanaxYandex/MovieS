@@ -1,3 +1,4 @@
+import { MainServiceService } from './../main-service.service';
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 
 @Component({
@@ -9,7 +10,7 @@ export class HeaderComponent implements OnInit {
 
     public dropDown = 'none';
 
-    constructor() { }
+    constructor(private mainService: MainServiceService) { }
 
     ngOnInit() {
     }

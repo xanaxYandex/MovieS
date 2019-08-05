@@ -1,6 +1,8 @@
+import { Router, ActivatedRoute } from '@angular/router';
 import { PagerService } from './../pager.service';
 import { MainServiceService, Movie } from './../main-service.service';
 import { Component, OnInit } from '@angular/core';
+import { logging } from 'protractor';
 
 @Component({
     selector: 'app-movie-list',
@@ -15,11 +17,20 @@ export class MovieListComponent implements OnInit {
 
     public pager: any = {};
 
-    constructor(private mainService: MainServiceService, private pagerService: PagerService) { }
+    constructor(
+        private mainService: MainServiceService,
+        private pagerService: PagerService,
+        private router: Router,
+        private route: ActivatedRoute
+    ) { }
 
     ngOnInit() {
         this.mainService.pageTransition.subscribe(page => {
             this.setPage(page);
+        });
+        this.route.params.subscribe(pageNumber => {
+            this.router.navigate([`/page/${+pageNumber['number'] || 1}`]);
+            this.setPage(+pageNumber['number'] || 1);
         });
     }
 
@@ -27,6 +38,7 @@ export class MovieListComponent implements OnInit {
         this.mainService.currentPage = page;
         this.mainService.getMovies(page).subscribe(response => {
             this.mainService.infoTransition.next(response['results']);
+            this.mainService.totalPages = response['total_pages'];
             this.movieList = response['results'];
             this.countOfPages = response['total_pages'];
             this.pager = this.pagerService.getPager(response['total_results'], page, 20);

@@ -3,6 +3,7 @@ import { Movie } from './main-service.service';
 import { HttpClient } from '@angular/common/http';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { debug } from 'util';
+import { Router } from '@angular/router';
 
 export interface Movie {
     adult: boolean;
@@ -33,8 +34,13 @@ export class MainServiceService {
 
     public flag = false;
 
-    constructor(private http: HttpClient) {
-        this.favoriteMovies = JSON.parse(localStorage.getItem('favourites'));
+    public totalPages: number;
+
+    constructor(
+        private http: HttpClient,
+        private router: Router
+    ) {
+        this.favoriteMovies = JSON.parse(localStorage.getItem('favourites')) || [];
     }
 
     getMovies(currentPage: number): Observable<object> {
@@ -46,7 +52,7 @@ export class MainServiceService {
 
     getMovie(movieId?: number) {
         if (!movieId) {
-            return this.http.get(`https://api.themoviedb.org/3/movie/${486589}?api_key=ebea8cfca72fdff8d2624ad7bbf78e4c&language=en-US`);
+            this.router.navigate(['/']);
         } else {
             // tslint:disable-next-line:max-line-length
             return this.http.get(`https://api.themoviedb.org/3/movie/${movieId}?api_key=ebea8cfca72fdff8d2624ad7bbf78e4c&language=en-US`);
@@ -86,7 +92,7 @@ export class MainServiceService {
                     movieList = result;
                 }
             });
-            
+
             if (+movieList[movieList.length - 1].id === +movieId && this.flag === false) {
                 this.pageTransition.next(++this.currentPage);
                 this.flag = true;
@@ -113,6 +119,7 @@ export class MainServiceService {
                 this.flag = false;
                 for (const key in movieList) {
                     if (movieList.hasOwnProperty(key)) {
+                        // this.router.navigate([`/page/${this.currentPage}`]);
                         return movieList[key].id;
                     }
                 }
@@ -165,6 +172,7 @@ export class MainServiceService {
                 this.flag = false;
                 for (const key in movieList) {
                     if (movieList.hasOwnProperty(key)) {
+                        // this.router.navigate([`/page/${this.currentPage}`]);
                         return movieList[movieList.length - 1].id;
                     }
                 }

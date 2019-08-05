@@ -13,6 +13,7 @@ import { FavouritesComponent } from './favourites/favourites.component';
 
 const routes = [
     { path: '', component: MovieListComponent },
+    { path: 'page/:number', component: MovieListComponent },
     { path: 'modal/:id', component: MovieModalComponent },
     { path: 'favourites', component: FavouritesComponent },
 ];

@@ -57,6 +57,7 @@
                 box-shadow: 0 0 15px rgba($color: #000000, $alpha: 1.0);    
                 
                 &:hover {
+                    cursor: pointer;
                     transition: 0.3s;
                     box-shadow: 0 0 35px rgba($color: burlywood, $alpha: 1.0);
                 }

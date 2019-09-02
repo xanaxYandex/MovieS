@@ -1,4 +1,4 @@
-import { MainServiceService } from './../main-service.service';
+import { MainServiceService } from '../../services/main-service.service';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
@@ -8,7 +8,6 @@ import { Router } from '@angular/router';
     styleUrls: ['./favourites.component.scss']
 })
 export class FavouritesComponent implements OnInit {
-
     public favoriteMovies: object[] = [];
 
     constructor(
@@ -16,7 +15,7 @@ export class FavouritesComponent implements OnInit {
         private router: Router
     ) { }
 
-    ngOnInit() {
+    public ngOnInit(): void {
         this.mainService.showFavorites().forEach(element => {
             this.mainService.getMovie(+element).subscribe(result => {
                 this.favoriteMovies.push(result);
@@ -24,7 +23,7 @@ export class FavouritesComponent implements OnInit {
         });
     }
 
-    toModal(id: number) {
+    public toModal(id: number): void {
         this.router.navigate(
             ['/modal', id],
             {

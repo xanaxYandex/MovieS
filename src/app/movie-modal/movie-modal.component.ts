@@ -1,8 +1,6 @@
-import { Movie, MainServiceService } from './../main-service.service';
-import { Component, OnInit, Input, Output, EventEmitter, Query } from '@angular/core';
-import { DomSanitizer } from '@angular/platform-browser';
+import { Movie, MainServiceService } from '../../services/main-service.service';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { error } from '@angular/compiler/src/util';
 
 @Component({
     selector: 'app-movie-modal',
@@ -10,43 +8,30 @@ import { error } from '@angular/compiler/src/util';
     styleUrls: ['./movie-modal.component.scss']
 })
 export class MovieModalComponent implements OnInit {
-
     public movieInfo: Movie;
-
     public isFavourite = false;
-
     public isFavouritePage = false;
-
     public idParam: number;
-
     public backColor: string;
-
     public posterUrl: string;
-
-    public prevVision = 'flex';
-
-    public nextVision = 'flex';
+    public prevVision = true;
+    public nextVision = true;
 
     constructor(
-        private mainService: MainServiceService,
-        private sanitizer: DomSanitizer,
+        public mainService: MainServiceService,
         private route: ActivatedRoute,
         private router: Router
     ) { }
 
-    ngOnInit() {
-        this.route.params.subscribe(result => {
-            this.idParam = +result['id'];
-        });
-
-        this.mainService.getMovie(this.idParam).subscribe(result => {
-            this.getMovieData(result);
+    public ngOnInit(): void {
+        this.idParam = this.route.snapshot.params.id;
+        this.mainService.getMovie(this.idParam).subscribe(response => {
+            this.getMovieData(response);
         });
     }
 
-    toNextMovie() {
+    public toNextMovie(): void {
         let id = +this.mainService.toNextMovie(this.movieInfo.id);
-
         setTimeout(() => {
             if (+id === +this.movieInfo.id) {
                 id = +this.mainService.toNextMovie(this.movieInfo.id);
@@ -71,14 +56,12 @@ export class MovieModalComponent implements OnInit {
         }, 200);
     }
 
-    toPreviousMovie() {
+    public toPreviousMovie(): void {
         let id = +this.mainService.toPreviousMovie(this.movieInfo.id);
-
         setTimeout(() => {
             if (+id === +this.movieInfo.id) {
                 id = +this.mainService.toPreviousMovie(this.movieInfo.id);
             }
-
             if (!this.route.snapshot.queryParams['favourite']) {
                 this.mainService.getMovie(id).subscribe(result => {
                     this.router.navigate(
@@ -99,7 +82,7 @@ export class MovieModalComponent implements OnInit {
         }, 50);
     }
 
-    toFavourite() {
+    public toFavourite(): void {
         if (!this.isFavourite) {
             this.mainService.AddToFavorite(this.movieInfo.id);
             this.isFavourite = !this.isFavourite;
@@ -109,7 +92,7 @@ export class MovieModalComponent implements OnInit {
         }
     }
 
-    checkFavourite() {
+    private checkFavourite(): void {
         this.mainService.showFavorites().forEach(elem => {
             if (+elem === +this.movieInfo.id) {
                 this.isFavourite = true;
@@ -117,50 +100,54 @@ export class MovieModalComponent implements OnInit {
         });
     }
 
-    getMovieData(result: object) {
+    private getMovieData(result: object): void {
         this.movieInfo = result as Movie;
         this.backColor = `http://image.tmdb.org/t/p/w500${this.movieInfo.backdrop_path}`;
         this.posterUrl = `http://image.tmdb.org/t/p/w500${this.movieInfo.poster_path}`;
         this.isFavourite = false;
-        setTimeout(_ => {
-            this.checkFavourite();
-        }, 0);
+        this.checkFavourite();
+        this.checkButtonVision();
+    }
+
+    private checkButtonVision(): void {
         if (this.route.snapshot.queryParams['favourite']) {
             this.isFavouritePage = true;
             if (+this.mainService.favoriteMovies[0] === this.movieInfo.id) {
-                this.prevVision = 'none';
-                this.nextVision = 'flex';
+                this.prevVision = false;
+                this.nextVision = true;
             } else if (+this.mainService.favoriteMovies[this.mainService.favoriteMovies.length - 1] === this.movieInfo.id) {
-                this.nextVision = 'none';
-                this.prevVision = 'flex';
+                this.nextVision = false;
+                this.prevVision = true;
             } else {
-                this.nextVision = 'flex';
-                this.prevVision = 'flex';
+                this.nextVision = true;
+                this.prevVision = true;
             }
         } else {
             this.isFavouritePage = false;
             this.mainService.infoTransition.subscribe({
+                // tslint:disable-next-line:no-shadowed-variable
                 next: result => {
                     if (this.mainService.currentPage === 1) {
                         if (this.movieInfo.id === result[0].id) {
-                            this.prevVision = 'none';
-                            this.nextVision = 'flex';
+                            this.prevVision = false;
+                            this.nextVision = true;
                         } else {
-                            this.prevVision = 'flex';
-                            this.nextVision = 'flex';
+                            this.prevVision = true;
+                            this.nextVision = true;
                         }
                     } else if (this.mainService.currentPage === this.mainService.totalPages) {
                         if (this.movieInfo.id === result[result.length - 1].id) {
-                            this.prevVision = 'flex';
-                            this.nextVision = 'none';
+                            this.prevVision = true;
+                            this.nextVision = false;
                         } else {
-                            this.prevVision = 'flex';
-                            this.nextVision = 'flex';
+                            this.nextVision = true;
+                            this.prevVision = true;
                         }
                     }
                 }
             });
         }
     }
+
 }
 

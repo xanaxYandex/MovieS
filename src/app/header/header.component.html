@@ -1,16 +1,10 @@
-<header class="header">
-    <a [routerLink]="['']">
-        <img src="../../assets/globe-2-xxl.png" alt="planet-icon">
-        <span>Movies</span>
-    </a>
+<header class="header"><a [routerLink]="['']">
+        <img src="../../assets/globe-2-xxl.png" alt="planet-icon"><span>Movies</span></a>
     <div class="dropdown">
-        <div class="dropbtn" (click)="dropDownState()">
-            <span></span>
-            <img src="../../assets/white-down-arrow-png-2.png" alt="arrow-to-down">
-        </div>
-        <div id="myDropdown" class="dropdown-content" [ngStyle]="{'display': dropDown}">
-            <span [routerLink]="[ '']">Home</span>
-            <span [routerLink]="[ '/favourites']" (click)="dropDownState()">Favourites</span>
-        </div>
+        <div class="dropbtn" (click)="dropDownState()"><span></span><img src="../../assets/white-down-arrow-png-2.png"
+                alt="arrow-to-down"></div>
+        <div id="myDropdown" class="dropdown-content" [ngClass]="{'display-dropdown': dropDown}"><span
+                [routerLink]="[ '']">Home</span><span [routerLink]="[ '/favourites']"
+                (click)="dropDownState()">Favourites</span></div>
     </div>
 </header>

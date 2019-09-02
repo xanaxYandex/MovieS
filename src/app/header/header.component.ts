@@ -1,28 +1,20 @@
-import { MainServiceService } from './../main-service.service';
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
     selector: 'app-header',
     templateUrl: './header.component.html',
     styleUrls: ['./header.component.scss']
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent {
+    public dropDown = false;
 
-    public dropDown = 'none';
+    constructor() { }
 
-    constructor(private mainService: MainServiceService) { }
-
-    ngOnInit() {
-    }
-
-    dropDownState() {
-        if (this.dropDown === 'none') {
-            this.dropDown = 'block';
+    public dropDownState(): void {
+        if (this.dropDown === false) {
+            this.dropDown = true;
         } else {
-            this.dropDown = 'none';
+            this.dropDown = false;
         }
-        console.log(this.dropDown);
-
     }
-
 }

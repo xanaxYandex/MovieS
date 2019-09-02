@@ -10,16 +10,15 @@
             <span></span>
         </div>
         <div class="next-back">
-            <div class="previous-btn" (click)="toPreviousMovie()" [style.display]="prevVision">
+            <div class="previous-btn" (click)="toPreviousMovie()" [ngClass]="{'prev-btn-vision': prevVision}">
                 <img src="../../assets/arrow_back_white_192x192.png" alt="">
                 <span></span>
             </div>
-            <div class="next-btn" (click)="toNextMovie()" [style.display]="nextVision">
+            <div class="next-btn" (click)="toNextMovie()" [ngClass]="{'next-btn-vision': nextVision}">
                 <span></span>
                 <img src="../../assets/arrow_next_white_192x192.png" alt="">
             </div>
         </div>
-
     </div>
     <div class="movie-post">
         <div class="movie-info">
@@ -38,15 +37,10 @@
                 <p>Rating: <strong> {{movieInfo?.adult ? 'NC-17' : 'R' }}</strong> </p>
                 <p>Release date: <strong> {{movieInfo?.release_date}}</strong> </p>
             </div>
-
             <h1 class="movie-title-mobile">{{movieInfo?.original_title}}</h1>
-
             <hr>
-
             <p>{{movieInfo?.overview}}</p>
-
             <hr>
-
         </div>
     </div>
 

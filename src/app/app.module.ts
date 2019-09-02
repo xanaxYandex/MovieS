@@ -1,23 +1,15 @@
-import { MainServiceService } from './main-service.service';
+import { AppRoutingModule } from './app-routing/app-routing.module';
+import { MainServiceService } from '../services/main-service.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
-import { RouterModule } from '@angular/router';
 
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
 import { MovieListComponent } from './movie-list/movie-list.component';
 import { MovieModalComponent } from './movie-modal/movie-modal.component';
 import { FavouritesComponent } from './favourites/favourites.component';
-
-const routes = [
-    { path: '', component: MovieListComponent },
-    { path: 'page/:number', component: MovieListComponent },
-    { path: 'modal/:id', component: MovieModalComponent },
-    { path: 'favourites', component: FavouritesComponent },
-];
-
 
 @NgModule({
     declarations: [
@@ -31,7 +23,7 @@ const routes = [
         BrowserModule,
         HttpClientModule,
         FormsModule,
-        RouterModule.forRoot(routes)
+        AppRoutingModule,
     ],
     providers: [MainServiceService],
     bootstrap: [AppComponent]

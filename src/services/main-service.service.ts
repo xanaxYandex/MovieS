@@ -1,8 +1,6 @@
 import { Movie } from './main-service.service';
-// import { favouriteMovies } from './data/favourite';
 import { HttpClient } from '@angular/common/http';
 import { Observable, BehaviorSubject } from 'rxjs';
-import { debug } from 'util';
 import { Router } from '@angular/router';
 
 export interface Movie {
@@ -23,17 +21,11 @@ export interface Movie {
 }
 
 export class MainServiceService {
-
     public favoriteMovies: string[] = [];
-
     public currentPage = 1;
-
     public infoTransition: BehaviorSubject<any> = new BehaviorSubject(0);
-
     public pageTransition: BehaviorSubject<any> = new BehaviorSubject(this.currentPage);
-
-    public flag = false;
-
+    private flag = false;
     public totalPages: number;
 
     constructor(
@@ -43,14 +35,14 @@ export class MainServiceService {
         this.favoriteMovies = JSON.parse(localStorage.getItem('favourites')) || [];
     }
 
-    getMovies(currentPage: number): Observable<object> {
+    public getMovies(currentPage: number): Observable<object> {
         return this
             .http
             // tslint:disable-next-line:max-line-length
             .get(`https://api.themoviedb.org/3/movie/now_playing?api_key=ebea8cfca72fdff8d2624ad7bbf78e4c&language=en-US&page=${currentPage}`);
     }
 
-    getMovie(movieId?: number) {
+    public getMovie(movieId?: number): Observable<object> {
         if (!movieId) {
             this.router.navigate(['/']);
         } else {
@@ -60,21 +52,21 @@ export class MainServiceService {
 
     }
 
-    showFavorites(): string[] {
+    public showFavorites(): string[] {
         return this.favoriteMovies;
     }
 
-    AddToFavorite(addId: number) {
+    public AddToFavorite(addId: number): void {
         this.favoriteMovies.push(addId.toString());
         localStorage.setItem('favourites', JSON.stringify(this.favoriteMovies));
     }
 
-    RemoveFromFavorite(removeId: number) {
+    public RemoveFromFavorite(removeId: number): void {
         this.favoriteMovies.splice(this.favoriteMovies.indexOf(removeId.toString()), 1);
         localStorage.setItem('favourites', JSON.stringify(this.favoriteMovies));
     }
 
-    toNextMovie(movieId: number, isFavourite: boolean = false): number {
+    public toNextMovie(movieId: number, isFavourite: boolean = false): number {
         if (isFavourite) {
             for (const key in this.favoriteMovies) {
                 if (this.favoriteMovies.hasOwnProperty(key)) {
@@ -127,7 +119,7 @@ export class MainServiceService {
         }
     }
 
-    toPreviousMovie(movieId: number, isFavourite: boolean = false): number {
+    public toPreviousMovie(movieId: number, isFavourite: boolean = false): number {
         if (isFavourite) {
             for (const key in this.favoriteMovies) {
                 if (this.favoriteMovies.hasOwnProperty(key)) {

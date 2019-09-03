@@ -1,4 +1,3 @@
-<div class="bg" [style.background-image]="'url('+ backColor +')'"></div>
 <div class="modal-movie">
     <div class="nav">
         <div *ngIf="!isFavouritePage" class="back-to-list-btn" [routerLink]="['/page/', this.mainService.currentPage]">
@@ -23,7 +22,7 @@
     <div class="movie-post">
         <div class="movie-info">
             <div class="movie-img">
-                <img [src]="posterUrl" [alt]="movieInfo?.id">
+                <img src="{{posterUrl}}" *ngIf="posterUrl" [alt]="movieInfo?.id">
             </div>
             <div class="favourite-btn">
                 <span (click)="toFavourite()"
@@ -43,5 +42,5 @@
             <hr>
         </div>
     </div>
-
 </div>
+<div class="bg" appSetImage [backImage]="backColor"></div>

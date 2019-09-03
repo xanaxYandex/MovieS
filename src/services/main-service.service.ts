@@ -33,6 +33,9 @@ export class MainServiceService {
         private router: Router
     ) {
         this.favoriteMovies = JSON.parse(localStorage.getItem('favourites')) || [];
+        this.getMovies(this.currentPage).subscribe(response => {
+            this.infoTransition.next(response['results']);
+        });
     }
 
     public getMovies(currentPage: number): Observable<object> {

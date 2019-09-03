@@ -107,6 +107,8 @@ export class MovieModalComponent implements OnInit {
         this.isFavourite = false;
         this.checkFavourite();
         this.checkButtonVision();
+
+
     }
 
     private checkButtonVision(): void {

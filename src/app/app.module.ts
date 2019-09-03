@@ -10,6 +10,7 @@ import { HeaderComponent } from './header/header.component';
 import { MovieListComponent } from './movie-list/movie-list.component';
 import { MovieModalComponent } from './movie-modal/movie-modal.component';
 import { FavouritesComponent } from './favourites/favourites.component';
+import { SetImageDirective } from './set-image.directive';
 
 @NgModule({
     declarations: [
@@ -18,6 +19,7 @@ import { FavouritesComponent } from './favourites/favourites.component';
         MovieListComponent,
         MovieModalComponent,
         FavouritesComponent,
+        SetImageDirective,
     ],
     imports: [
         BrowserModule,
